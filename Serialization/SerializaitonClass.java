@@ -16,11 +16,16 @@ public class SerializaitonClass {
 		Employee emp = new Employee();
 		emp.firstName = "Vivekanand";
 		emp.lastName = "Gautam";
+		
+		Employee emp2 = new Employee();
+		emp.firstName = "Gunasekar";
+		emp.lastName = "A";
 
 		try {
 			FileOutputStream fileOut = new FileOutputStream("./employee.txt");
 			ObjectOutputStream out = new ObjectOutputStream(fileOut);
 			out.writeObject(emp);
+			out.writeObject(emp2);
 			out.close();
 			fileOut.close();
 			System.out.printf("Serialized data is saved in ./employee.txt file");
