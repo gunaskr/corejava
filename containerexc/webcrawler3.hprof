@@ -1,0 +1,262 @@
+JAVA PROFILE 1.0.1, created Sun Oct 29 10:09:05 2017
+
+Copyright (c) 2003, 2005, Oracle and/or its affiliates. All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions
+are met:
+
+  - Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer.
+
+  - Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in the
+    documentation and/or other materials provided with the distribution.
+
+  - Neither the name of Oracle nor the names of its
+    contributors may be used to endorse or promote products derived
+    from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
+IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+PURPOSE ARE DISCLAIMED.  IN NO EVENT SHALL THE COPYRIGHT OWNER OR
+CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+
+Header for -agentlib:hprof (or -Xrunhprof) ASCII Output (JDK 5.0 JVMTI based)
+
+WARNING!  This file format is under development, and is subject to
+change without notice.
+
+This file contains the following types of records:
+
+THREAD START
+THREAD END      mark the lifetime of Java threads
+
+TRACE           represents a Java stack trace.  Each trace consists
+                of a series of stack frames.  Other records refer to
+                TRACEs to identify (1) where object allocations have
+                taken place, (2) the frames in which GC roots were
+                found, and (3) frequently executed methods.
+
+HEAP DUMP       is a complete snapshot of all live objects in the Java
+                heap.  Following distinctions are made:
+
+                ROOT    root set as determined by GC
+                CLS     classes 
+                OBJ     instances
+                ARR     arrays
+
+SITES           is a sorted list of allocation sites.  This identifies
+                the most heavily allocated object types, and the TRACE
+                at which those allocations occurred.
+
+CPU SAMPLES     is a statistical profile of program execution.  The VM
+                periodically samples all running threads, and assigns
+                a quantum to active TRACEs in those threads.  Entries
+                in this record are TRACEs ranked by the percentage of
+                total quanta they consumed; top-ranked TRACEs are
+                typically hot spots in the program.
+
+CPU TIME        is a profile of program execution obtained by measuring
+                the time spent in individual methods (excluding the time
+                spent in callees), as well as by counting the number of
+                times each method is called. Entries in this record are
+                TRACEs ranked by the percentage of total CPU time. The
+                "count" field indicates the number of times each TRACE 
+                is invoked.
+
+MONITOR TIME    is a profile of monitor contention obtained by measuring
+                the time spent by a thread waiting to enter a monitor.
+                Entries in this record are TRACEs ranked by the percentage
+                of total monitor contention time and a brief description
+                of the monitor.  The "count" field indicates the number of 
+                times the monitor was contended at that TRACE.
+
+MONITOR DUMP    is a complete snapshot of all the monitors and threads in 
+                the System.
+
+HEAP DUMP, SITES, CPU SAMPLES|TIME and MONITOR DUMP|TIME records are generated 
+at program exit.  They can also be obtained during program execution by typing 
+Ctrl-\ (on Solaris) or by typing Ctrl-Break (on Win32).
+
+--------
+
+THREAD START (obj=5000017b, id = 200002, name="HPROF gc_finish watcher", group="system")
+THREAD START (obj=5000017b, id = 200001, name="main", group="main")
+THREAD END (id = 200001)
+THREAD START (obj=5000017b, id = 200005, name="DestroyJavaVM", group="main")
+THREAD END (id = 200005)
+THREAD END (id = 200002)
+TRACE 300090:
+	WebCrawler.getUrls(WebCrawler.java:16)
+	WebCrawler.crawl(WebCrawler.java:28)
+	WebCrawler.main(WebCrawler.java:23)
+TRACE 300091:
+	WebCrawler.getUrls(WebCrawler.java:17)
+	WebCrawler.crawl(WebCrawler.java:28)
+	WebCrawler.main(WebCrawler.java:23)
+TRACE 300093:
+	java.lang.Throwable.printStackTrace(<Unknown Source>:Unknown line)
+	java.lang.Throwable.printStackTrace(<Unknown Source>:Unknown line)
+	java.lang.ThreadGroup.uncaughtException(<Unknown Source>:Unknown line)
+	java.lang.ThreadGroup.uncaughtException(<Unknown Source>:Unknown line)
+	java.lang.Thread.dispatchUncaughtException(<Unknown Source>:Unknown line)
+TRACE 300095:
+	java.io.FileOutputStream.writeBytes(<Unknown Source>:Unknown line)
+	java.io.FileOutputStream.write(<Unknown Source>:Unknown line)
+	java.io.BufferedOutputStream.flushBuffer(<Unknown Source>:Unknown line)
+	java.io.BufferedOutputStream.flush(<Unknown Source>:Unknown line)
+	java.io.PrintStream.write(<Unknown Source>:Unknown line)
+	sun.nio.cs.StreamEncoder.writeBytes(<Unknown Source>:Unknown line)
+	sun.nio.cs.StreamEncoder.implFlushBuffer(<Unknown Source>:Unknown line)
+	sun.nio.cs.StreamEncoder.flushBuffer(<Unknown Source>:Unknown line)
+	java.io.OutputStreamWriter.flushBuffer(<Unknown Source>:Unknown line)
+	java.io.PrintStream.write(<Unknown Source>:Unknown line)
+	java.io.PrintStream.print(<Unknown Source>:Unknown line)
+	java.io.PrintStream.println(<Unknown Source>:Unknown line)
+	java.lang.Throwable$WrappedPrintStream.println(<Unknown Source>:Unknown line)
+	java.lang.Throwable.printStackTrace(<Unknown Source>:Unknown line)
+	java.lang.Throwable.printStackTrace(<Unknown Source>:Unknown line)
+	java.lang.ThreadGroup.uncaughtException(<Unknown Source>:Unknown line)
+	java.lang.ThreadGroup.uncaughtException(<Unknown Source>:Unknown line)
+	java.lang.Thread.dispatchUncaughtException(<Unknown Source>:Unknown line)
+TRACE 300096:
+	java.lang.Throwable.printStackTrace(<Unknown Source>:Unknown line)
+	java.lang.Throwable.printStackTrace(<Unknown Source>:Unknown line)
+	java.lang.ThreadGroup.uncaughtException(<Unknown Source>:Unknown line)
+	java.lang.ThreadGroup.uncaughtException(<Unknown Source>:Unknown line)
+	java.lang.Thread.dispatchUncaughtException(<Unknown Source>:Unknown line)
+TRACE 300100:
+	java.io.FileOutputStream.writeBytes(<Unknown Source>:Unknown line)
+	java.io.FileOutputStream.write(<Unknown Source>:Unknown line)
+	java.io.BufferedOutputStream.flushBuffer(<Unknown Source>:Unknown line)
+	java.io.BufferedOutputStream.flush(<Unknown Source>:Unknown line)
+	java.io.PrintStream.write(<Unknown Source>:Unknown line)
+	sun.nio.cs.StreamEncoder.writeBytes(<Unknown Source>:Unknown line)
+	sun.nio.cs.StreamEncoder.implFlushBuffer(<Unknown Source>:Unknown line)
+	sun.nio.cs.StreamEncoder.flushBuffer(<Unknown Source>:Unknown line)
+	java.io.OutputStreamWriter.flushBuffer(<Unknown Source>:Unknown line)
+	java.io.PrintStream.newLine(<Unknown Source>:Unknown line)
+	java.io.PrintStream.println(<Unknown Source>:Unknown line)
+	java.lang.Throwable$WrappedPrintStream.println(<Unknown Source>:Unknown line)
+	java.lang.Throwable.printStackTrace(<Unknown Source>:Unknown line)
+	java.lang.Throwable.printStackTrace(<Unknown Source>:Unknown line)
+	java.lang.ThreadGroup.uncaughtException(<Unknown Source>:Unknown line)
+	java.lang.ThreadGroup.uncaughtException(<Unknown Source>:Unknown line)
+	java.lang.Thread.dispatchUncaughtException(<Unknown Source>:Unknown line)
+TRACE 300089:
+	java.lang.StringBuilder.append(<Unknown Source>:Unknown line)
+	WebCrawler.getUrls(WebCrawler.java:17)
+	WebCrawler.crawl(WebCrawler.java:28)
+	WebCrawler.main(WebCrawler.java:23)
+TRACE 300088:
+	java.lang.StringBuilder.toString(<Unknown Source>:Unknown line)
+	WebCrawler.getUrls(WebCrawler.java:17)
+	WebCrawler.crawl(WebCrawler.java:28)
+	WebCrawler.main(WebCrawler.java:23)
+TRACE 300087:
+	java.util.ArrayList.<init>(<Unknown Source>:Unknown line)
+	WebCrawler.getUrls(WebCrawler.java:12)
+	WebCrawler.crawl(WebCrawler.java:28)
+	WebCrawler.main(WebCrawler.java:23)
+TRACE 300076:
+	java.util.concurrent.TimeUnit.<clinit>(<Unknown Source>:Unknown line)
+	java.util.concurrent.Executors.newFixedThreadPool(<Unknown Source>:Unknown line)
+	WebCrawler.<init>(WebCrawler.java:9)
+	WebCrawler.main(WebCrawler.java:22)
+TRACE 300055:
+	sun.misc.Perf.createLong(<Unknown Source>:Unknown line)
+	sun.misc.PerfCounter.<init>(<Unknown Source>:Unknown line)
+	sun.misc.PerfCounter.newPerfCounter(<Unknown Source>:Unknown line)
+	sun.misc.PerfCounter$CoreCounters.<clinit>(<Unknown Source>:Unknown line)
+	sun.misc.PerfCounter.getReadClassBytesTime(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.defineClass(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.access$100(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader$1.run(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader$1.run(<Unknown Source>:Unknown line)
+	java.security.AccessController.doPrivileged(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.findClass(<Unknown Source>:Unknown line)
+	java.lang.ClassLoader.loadClass(<Unknown Source>:Unknown line)
+	sun.misc.Launcher$AppClassLoader.loadClass(<Unknown Source>:Unknown line)
+	java.lang.ClassLoader.loadClass(<Unknown Source>:Unknown line)
+	sun.launcher.LauncherHelper.checkAndLoadMain(<Unknown Source>:Unknown line)
+TRACE 300097:
+	java.lang.System.arraycopy(<Unknown Source>:Unknown line)
+	java.util.Arrays.copyOf(<Unknown Source>:Unknown line)
+	java.lang.AbstractStringBuilder.ensureCapacityInternal(<Unknown Source>:Unknown line)
+	java.lang.AbstractStringBuilder.append(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.append(<Unknown Source>:Unknown line)
+	java.lang.StackTraceElement.toString(<Unknown Source>:Unknown line)
+	java.lang.String.valueOf(<Unknown Source>:Unknown line)
+	java.lang.StringBuilder.append(<Unknown Source>:Unknown line)
+	java.lang.Throwable.printStackTrace(<Unknown Source>:Unknown line)
+	java.lang.Throwable.printStackTrace(<Unknown Source>:Unknown line)
+	java.lang.ThreadGroup.uncaughtException(<Unknown Source>:Unknown line)
+	java.lang.ThreadGroup.uncaughtException(<Unknown Source>:Unknown line)
+	java.lang.Thread.dispatchUncaughtException(<Unknown Source>:Unknown line)
+TRACE 300042:
+	java.util.zip.ZipFile.<clinit>(<Unknown Source>:Unknown line)
+	sun.misc.Unsafe.ensureClassInitialized(<Unknown Source>:Unknown line)
+	sun.misc.SharedSecrets.getJavaUtilZipFileAccess(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$JarLoader.<clinit>(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$3.run(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath$3.run(<Unknown Source>:Unknown line)
+	java.security.AccessController.doPrivileged(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath.getLoader(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath.getLoader(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath.getNextLoader(<Unknown Source>:Unknown line)
+	sun.misc.URLClassPath.getResource(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader$1.run(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader$1.run(<Unknown Source>:Unknown line)
+	java.security.AccessController.doPrivileged(<Unknown Source>:Unknown line)
+	java.net.URLClassLoader.findClass(<Unknown Source>:Unknown line)
+	java.lang.ClassLoader.loadClass(<Unknown Source>:Unknown line)
+	java.lang.ClassLoader.loadClass(<Unknown Source>:Unknown line)
+	sun.misc.Launcher$AppClassLoader.loadClass(<Unknown Source>:Unknown line)
+	java.lang.ClassLoader.loadClass(<Unknown Source>:Unknown line)
+	sun.launcher.LauncherHelper.checkAndLoadMain(<Unknown Source>:Unknown line)
+TRACE 300024:
+	java.lang.ProcessEnvironment$CheckedEntrySet.iterator(<Unknown Source>:Unknown line)
+	java.util.AbstractMap.putAll(<Unknown Source>:Unknown line)
+	java.util.TreeMap.putAll(<Unknown Source>:Unknown line)
+	java.lang.ProcessEnvironment.<clinit>(<Unknown Source>:Unknown line)
+	java.lang.System.getenv(<Unknown Source>:Unknown line)
+	sun.usagetracker.UsageTrackerClient$2.run(<Unknown Source>:Unknown line)
+	sun.usagetracker.UsageTrackerClient$2.run(<Unknown Source>:Unknown line)
+	java.security.AccessController.doPrivileged(<Unknown Source>:Unknown line)
+	sun.usagetracker.UsageTrackerClient.getEnvPrivileged(<Unknown Source>:Unknown line)
+	sun.usagetracker.UsageTrackerClient.getOSSpecificConfigFilePath(<Unknown Source>:Unknown line)
+	sun.usagetracker.UsageTrackerClient.getConfigFilePrivileged(<Unknown Source>:Unknown line)
+	sun.usagetracker.UsageTrackerClient.setupAndTimestamp(<Unknown Source>:Unknown line)
+	sun.usagetracker.UsageTrackerClient.access$000(<Unknown Source>:Unknown line)
+	sun.usagetracker.UsageTrackerClient$4.run(<Unknown Source>:Unknown line)
+	sun.usagetracker.UsageTrackerClient$4.run(<Unknown Source>:Unknown line)
+	java.security.AccessController.doPrivileged(<Unknown Source>:Unknown line)
+	sun.usagetracker.UsageTrackerClient.run(<Unknown Source>:Unknown line)
+	sun.misc.PostVMInitHook.trackJavaUsage(<Unknown Source>:Unknown line)
+	sun.misc.PostVMInitHook.run(<Unknown Source>:Unknown line)
+CPU SAMPLES BEGIN (total = 164) Sun Oct 29 10:12:09 2017
+rank   self  accum   count trace method
+   1 73.17% 73.17%     120 300090 WebCrawler.getUrls
+   2 19.51% 92.68%      32 300091 WebCrawler.getUrls
+   3  0.61% 93.29%       1 300093 java.lang.Throwable.printStackTrace
+   4  0.61% 93.90%       1 300095 java.io.FileOutputStream.writeBytes
+   5  0.61% 94.51%       1 300096 java.lang.Throwable.printStackTrace
+   6  0.61% 95.12%       1 300100 java.io.FileOutputStream.writeBytes
+   7  0.61% 95.73%       1 300089 java.lang.StringBuilder.append
+   8  0.61% 96.34%       1 300088 java.lang.StringBuilder.toString
+   9  0.61% 96.95%       1 300087 java.util.ArrayList.<init>
+  10  0.61% 97.56%       1 300076 java.util.concurrent.TimeUnit.<clinit>
+  11  0.61% 98.17%       1 300055 sun.misc.Perf.createLong
+  12  0.61% 98.78%       1 300097 java.lang.System.arraycopy
+  13  0.61% 99.39%       1 300042 java.util.zip.ZipFile.<clinit>
+  14  0.61% 100.00%       1 300024 java.lang.ProcessEnvironment$CheckedEntrySet.iterator
+CPU SAMPLES END
